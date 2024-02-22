@@ -20,10 +20,9 @@ class Server(Drawable):
         if self.infected:
             self.infection_radius += 0.0001
     
-    def draw(self, surface):
+    def draw(self, surface, overlay):
         super().draw(surface)
         if self.infected:
-            infection_color = (255, 0, 0, 128)
-            pygame.gfxdraw.filled_circle(surface, int(self.position[0]), int(self.position[1]), int(self.infection_radius), infection_color)
-            pygame.gfxdraw.aacircle(surface, int(self.position[0]), int(self.position[1]), int(self.infection_radius), infection_color)
+            infection_color = (0, 0, 0, 0)
+            pygame.gfxdraw.filled_circle(overlay, int(self.position[0]), int(self.position[1]), int(self.infection_radius), infection_color)
 

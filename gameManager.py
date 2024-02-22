@@ -9,6 +9,8 @@ class GameManager(object):
     def __init__(self):
         self.score = 0
         self.background = Drawable("background.jpeg", None, (0, 0))
+        #self.overlay = Drawable("overlay.jpeg", None, (0,0))
+        self.overlay = pygame.image.load("images/overlay.jpeg").convert_alpha()
         self.drawSurface = pygame.Surface(list(map(int, RESOLUTION)))
         self.servers = {}
 
@@ -31,9 +33,9 @@ class GameManager(object):
         pass
     
     def draw(self, screen):
-        self.drawSurface.fill((255, 255, 255)) 
+        self.drawSurface.fill((255, 255, 255))
         self.background.draw(self.drawSurface)   
-        
+        self.drawSurface.blit(self.overlay, (0, 0))
         for server_id, server in self.servers.items():
-            server.draw(self.drawSurface)
+            server.draw(self.drawSurface, self.overlay)
         pygame.transform.scale(self.drawSurface, UPSCALED, screen)
