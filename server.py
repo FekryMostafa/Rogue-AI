@@ -1,0 +1,29 @@
+import pygame
+import pygame.gfxdraw
+from mobile import Drawable
+import vector as v
+from constants import WORLDSIZE
+import random
+
+
+class Server(Drawable): 
+    def __init__(self, imageName, offset, position):
+        super().__init__(imageName, offset, position)
+        self.infection_radius = 0
+        self.infected = False
+
+    def infect(self):
+        self.infected = True
+        self.infection_radius = 50
+
+    def update(self, seconds):
+        if self.infected:
+            self.infection_radius += 0.0001
+    
+    def draw(self, surface):
+        super().draw(surface)
+        if self.infected:
+            infection_color = (255, 0, 0, 128)
+            pygame.gfxdraw.filled_circle(surface, int(self.position[0]), int(self.position[1]), int(self.infection_radius), infection_color)
+            pygame.gfxdraw.aacircle(surface, int(self.position[0]), int(self.position[1]), int(self.infection_radius), infection_color)
+

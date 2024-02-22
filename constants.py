@@ -1,0 +1,7 @@
+import vector as v
+
+RESOLUTION = v.vec(1440,900)
+SCALE = 0.5
+UPSCALED = RESOLUTION * SCALE
+SPEED = 3
+WORLDSIZE = v.vec(1440,900)
