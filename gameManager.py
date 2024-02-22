@@ -2,7 +2,7 @@ import pygame
 import vector as v
 from drawable import Drawable
 from constants import *
-from random import randrange
+from random import choice, randrange
 from server import Server
 
 class GameManager(object):
@@ -46,10 +46,11 @@ class GameManager(object):
     def update(self, seconds):
         for server_id, server in self.servers.items():
             server.update(seconds)
-        if randrange(10000) == 23:
-            print("success")
-            random_server_key = self.server_keys[randrange(len(self.server_keys))]
-            self.servers[random_server_key].infect()
+        if randrange(100) == 23:
+            random_server_key = choice(list(self.connections.keys()))
+            random_connected_server_index = choice(self.connections[random_server_key])
+            random_connected_server_key = f"server{random_connected_server_index}"
+            self.servers[random_connected_server_key].infect()
 
     def handleEvent(self, event, seconds):
         pass
