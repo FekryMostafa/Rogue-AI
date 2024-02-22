@@ -46,7 +46,7 @@ class GameManager(object):
     def update(self, seconds):
         for server_id, server in self.servers.items():
             server.update(seconds)
-        if randrange(100) == 23:
+        if randrange(10000) == 23:
             random_server_key = choice(list(self.connections.keys()))
             random_connected_server_index = choice(self.connections[random_server_key])
             random_connected_server_key = f"server{random_connected_server_index}"
