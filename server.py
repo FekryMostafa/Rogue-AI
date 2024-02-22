@@ -18,7 +18,7 @@ class Server(Drawable):
 
     def update(self, seconds):
         if self.infected:
-            self.infection_radius += 0.1
+            self.infection_radius += 0.0001
     
     def draw(self, surface, overlay):
         super().draw(surface)
