@@ -1,11 +1,11 @@
 import pygame
-from gameManager import GameManager
+from screenManager import ScreenManager
 from constants import UPSCALED
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode(list(map(int, UPSCALED)))
-    game = GameManager()
+    game = ScreenManager()
     gameClock = pygame.time.Clock()
     RUNNING = True
     while RUNNING:
