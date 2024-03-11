@@ -6,7 +6,7 @@ from gameManager import GameManager
 from vector import *
 from pygame.locals import *
 from text import TextEntry
-from menu import EventMenu
+from menu import *
 
 class ScreenManager(object):
       
@@ -28,7 +28,9 @@ class ScreenManager(object):
                                  UPSCALED // 2 + vec(0,50),
                                  lambda x: x.type == KEYDOWN and x.key == K_2,
                                  center="both")
-    
+        
+        self.statsMenu = StatsMenu("stats.jpeg", fontName="default8")
+        self.statsMenu.addStat("Speed", "2", UPSCALED // 2 - vec(0,50), center=None)
     
     def draw(self, drawSurf):
         if self.state.isInGame():
@@ -39,15 +41,18 @@ class ScreenManager(object):
         
         elif self.state == "mainMenu":
             self.mainMenu.draw(drawSurf)
+        elif self.state == "inStats":
+            self.statsMenu.draw(drawSurf)
     
     
     def handleEvent(self, event, seconds):
-        if self.state in ["game", "paused"]:
+        if event.type == KEYDOWN and event.key == K_s:
+            self.state.stats()
+        elif self.state in ["game", "paused"]:
             if event.type == KEYDOWN and event.key == K_m:
                 self.state.quitGame()
             elif event.type == KEYDOWN and event.key == K_p:
                 self.state.pause()
-                
             else:
                 self.game.handleEvent(event, seconds)
         elif self.state == "mainMenu":
@@ -64,4 +69,6 @@ class ScreenManager(object):
             self.game.update(seconds)
         elif self.state == "mainMenu":
             self.mainMenu.update(seconds)
+        elif self.state == "stats":
+            self.statsMenu.update(seconds)
     

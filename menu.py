@@ -54,6 +54,22 @@ class EventMenu(AbstractMenu):
             function = self.eventMap[key]
             if function(event):
                 return key
+
+class StatsMenu(AbstractMenu):
+    def __init__(self, background, fontName="default", color=(255,255,255)):
+        super().__init__(background, fontName, color)
+        self.stats = {}
+
+    def addStat(self, key, initialValue, position, center=None):
+        super().addOption(key, f"{key}: {initialValue}", position, center)
+        self.stats[key] = initialValue
+
+    def updateStat(self, key, value):
+        self.stats[key] = str(value)
+        self.options[key].setText(f"{key}: {value}")
+
+    def draw(self, surface):
+        super().draw(surface)
         
     
     
