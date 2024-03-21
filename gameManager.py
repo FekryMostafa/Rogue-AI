@@ -8,8 +8,10 @@ from server import Server
 class GameManager(object):
     def __init__(self):
         self.score = 0
-        self.background = Drawable("background.jpeg", None, (0, 0))
+        #self.background = Drawable("background.jpeg", None, (0, 0))
         #self.overlay = Drawable("overlay.jpeg", None, (0,0))
+        self.background = pygame.image.load("images/background.jpeg").convert_alpha()
+
         self.overlay = pygame.image.load("images/overlay.jpeg").convert_alpha()
         self.drawSurface = pygame.Surface(list(map(int, RESOLUTION)))
         self.servers = {}
@@ -65,7 +67,8 @@ class GameManager(object):
     
     def draw(self, screen):
         self.drawSurface.fill((255, 255, 255))
-        self.background.draw(self.drawSurface)   
+        #self.background.draw(self.drawSurface)  
+        self.drawSurface.blit(self.background, (0, 0))
         self.drawSurface.blit(self.overlay, (0, 0))
         for server_id, server in self.servers.items():
             server.draw(self.drawSurface, self.overlay)
