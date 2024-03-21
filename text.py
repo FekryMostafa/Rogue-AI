@@ -20,7 +20,16 @@ class TextEntry(Drawable):
               color=(255,255,255)):
         super().__init__(position=position, imageName="")
         self.color = color
-        
-        self.image = TextEntry.FONTS[font].render(text,
-                                             False, self.color)
+        self.text = text
+        self.font = font 
+        self.render_text()
     
+    def render_text(self):
+        """Render the text to the image surface."""
+        self.image = TextEntry.FONTS[self.font].render(self.text, False, self.color)
+        
+    def update_text(self, new_text):
+        """Update the text and re-render it."""
+        if new_text != self.text:
+            self.text = new_text
+            self.render_text()

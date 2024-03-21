@@ -30,7 +30,7 @@ class ScreenManager(object):
                                  center="both")
         
         self.statsMenu = StatsMenu("stats.jpeg", fontName="default8")
-        self.statsMenu.addStat("Speed", "2", UPSCALED // 2 - vec(0,50), center=None)
+        #self.statsMenu.addStat("Speed", "2", UPSCALED // 2 - vec(0,50), center=None)
     
     def draw(self, drawSurf):
         if self.state.isInGame():
@@ -46,6 +46,7 @@ class ScreenManager(object):
     
     
     def handleEvent(self, event, seconds):
+        #print(self.state)
         if event.type == KEYDOWN and event.key == K_s:
             self.state.stats()
         elif self.state in ["game", "paused"]:
@@ -62,6 +63,8 @@ class ScreenManager(object):
                 self.state.startGame()
             elif choice == "exit":
                 return "exit"
+        elif self.state == "inStats":
+            self.statsMenu.handleEvent(event)
      
     
     def update(self, seconds):      
@@ -69,6 +72,6 @@ class ScreenManager(object):
             self.game.update(seconds)
         elif self.state == "mainMenu":
             self.mainMenu.update(seconds)
-        elif self.state == "stats":
+        elif self.state == "inStats":
             self.statsMenu.update(seconds)
     
