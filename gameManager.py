@@ -43,7 +43,7 @@ class GameManager(object):
         self.random_server_key = self.server_keys[randrange(len(self.server_keys))]
         self.servers[self.random_server_key].infect()
         self.spread_rate_modifier = 1.0
-        self.randomness = 10000
+        self.randomness = 100000
     
     def update(self, seconds):
         for server_id, server in self.servers.items():
