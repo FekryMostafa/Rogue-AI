@@ -80,7 +80,7 @@ class ScreenManager(object):
         """Update game stats based on changes in the stats menu."""
         spread_stat_value = self.statsMenu.stats.get("Spread", 0)
         speed_stat_value = self.statsMenu.stats.get("Speed", 0)
-        self.game.randomness = 100000 / (2 * speed_stat_value)
+        self.game.randomness =  100000 / (2 * speed_stat_value) if speed_stat_value != 0 else 100000
         new_modifier = self.calculate_modifier(spread_stat_value)
         self.game.update_spread_rate(new_modifier)
 
