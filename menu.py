@@ -71,6 +71,8 @@ class StatsMenu(AbstractMenu):
             (350, 260),
             (350, 310)
         ]
+        self.totalPoints = 10
+
         self.initialize_stats()
 
         self.button_positions = {
@@ -89,6 +91,7 @@ class StatsMenu(AbstractMenu):
         self.addStat("Speed", 0, self.positions[1], "horizontal")
         self.addStat("Research", 0, self.positions[2], "horizontal")
         self.addStat("Cyber Security", 0, self.positions[3], "horizontal")
+        self.addOption("Total Points", f"Total Points: {self.totalPoints}", (600, 20), "horizontal")
 
     def draw(self, surface):
         super().draw(surface)
@@ -104,9 +107,15 @@ class StatsMenu(AbstractMenu):
             for key, button_positions in self.button_positions.items():
                 down_button, up_button = [pygame.Rect(x, y, 50, 30) for x, y in button_positions]
                 if up_button.collidepoint(mouse_pos):
-                    self.stats[key] += 1
-                    self.editOption(key, f"{key}: {self.stats[key]}")
+                    if self.totalPoints > 0:
+                        self.stats[key] += 1
+                        self.totalPoints -= 1
+
+                        self.editOption(key, f"{key}: {self.stats[key]}")
                     #print(self.options[key].text)
                 elif down_button.collidepoint(mouse_pos):
-                    self.stats[key] -= 1
-                    self.editOption(key, f"{key}: {self.stats[key]}")
+                    if self.stats[key] > 0:
+                        self.stats[key] -= 1
+                        self.totalPoints += 1
+                        self.editOption(key, f"{key}: {max(self.stats[key], 0)}")
+            self.editOption("Total Points", f"Total Points: {self.totalPoints}") 

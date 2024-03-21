@@ -11,6 +11,7 @@ class Server(Drawable):
         super().__init__(imageName, offset, position)
         self.infection_radius = 0
         self.infected = False
+        self.infection_speed = 0.0001
 
     def infect(self):
         self.infected = True
@@ -18,7 +19,7 @@ class Server(Drawable):
 
     def update(self, seconds):
         if self.infected:
-            self.infection_radius += 0.0001
+            self.infection_radius += self.infection_speed
     
     def draw(self, surface, overlay):
         super().draw(surface)

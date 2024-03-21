@@ -42,15 +42,23 @@ class GameManager(object):
         self.server_keys = list(self.servers.keys())
         self.random_server_key = self.server_keys[randrange(len(self.server_keys))]
         self.servers[self.random_server_key].infect()
-
+        self.spread_rate_modifier = 1.0
+        self.randomness = 10000
+    
     def update(self, seconds):
         for server_id, server in self.servers.items():
             server.update(seconds)
-        if randrange(10000) == 23:
+        if randrange(self.randomness) == 23:
             random_server_key = choice(list(self.connections.keys()))
             random_connected_server_index = choice(self.connections[random_server_key])
             random_connected_server_key = f"server{random_connected_server_index}"
             self.servers[random_connected_server_key].infect()
+
+    def update_spread_rate(self, new_modifier):
+        """Update the infection spread rate based on game stats."""
+        self.spread_rate_modifier = new_modifier
+        for server in self.servers.values():
+            server.infection_speed = 0.0001 * self.spread_rate_modifier
 
     def handleEvent(self, event, seconds):
         pass

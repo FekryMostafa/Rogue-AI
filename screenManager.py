@@ -74,4 +74,16 @@ class ScreenManager(object):
             self.mainMenu.update(seconds)
         elif self.state == "inStats":
             self.statsMenu.update(seconds)
-    
+            self.update_game_stats()
+
+    def update_game_stats(self):
+        """Update game stats based on changes in the stats menu."""
+        spread_stat_value = self.statsMenu.stats.get("Spread", 0)
+        speed_stat_value = self.statsMenu.stats.get("Speed", 0)
+        self.game.randomness = 100000 / (2 * speed_stat_value)
+        new_modifier = self.calculate_modifier(spread_stat_value)
+        self.game.update_spread_rate(new_modifier)
+
+    def calculate_modifier(self, stat_value):
+        """Calculate modifier from stat value. Adjust this based on your game's logic."""
+        return 1.0 + (stat_value * 100)
