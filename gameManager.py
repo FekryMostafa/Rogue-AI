@@ -4,6 +4,7 @@ from drawable import Drawable
 from constants import *
 from random import choice, randrange
 from server import Server
+from bar import Bar
 
 class GameManager(object):
     def __init__(self):
@@ -46,6 +47,8 @@ class GameManager(object):
         self.servers[self.random_server_key].infect()
         self.spread_rate_modifier = 1.0
         self.randomness = 100000
+        self.bar = Bar("shield.png", None, (1100, 800))
+        
     
     def update(self, seconds):
         for server_id, server in self.servers.items():
@@ -55,13 +58,16 @@ class GameManager(object):
             random_connected_server_index = choice(self.connections[random_server_key])
             random_connected_server_key = f"server{random_connected_server_index}"
             self.servers[random_connected_server_key].infect()
+        self.bar.update(seconds)
 
     def update_spread_rate(self, new_modifier):
-        """Update the infection spread rate based on game stats."""
         self.spread_rate_modifier = new_modifier
         for server in self.servers.values():
             server.infection_speed = 0.0001 * self.spread_rate_modifier
 
+    def update_bar(self, modifier):
+        self.bar.adjustModifier(modifier)
+    
     def handleEvent(self, event, seconds):
         pass
     
@@ -76,5 +82,18 @@ class GameManager(object):
         for server, connected_servers in self.connections.items():
             for connected_server in connected_servers:
                 pygame.draw.line(self.drawSurface, (255, 255, 255, 50), self.serverPositions[server], self.serverPositions[connected_server], 1)
-
+        self.bar.draw(self.drawSurface)
         pygame.transform.scale(self.drawSurface, UPSCALED, screen)
+
+    def isWin(self):
+        totalRadius = 0
+        for server in self.servers.values():
+            totalRadius += server.infection_radius
+        if totalRadius >= 1000:
+            return True
+        return False
+    
+    def isLose(self):
+        if self.bar.progress > 99.9:
+            return True
+        return False

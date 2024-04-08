@@ -76,8 +76,8 @@ class StatsMenu(AbstractMenu):
         self.initialize_stats()
 
         self.button_positions = {
-            "Spread": [(200, 150), (450, 150)],
-            "Speed": [(200, 200), (450, 200)],
+            "Speed": [(200, 150), (450, 150)],
+            "Spread": [(200, 200), (450, 200)],
             "Research": [(200, 250), (450, 250)],
             "Cyber Security": [(200, 300), (450, 300)]
         }
@@ -87,8 +87,8 @@ class StatsMenu(AbstractMenu):
         self.stats[key] = initialValue
 
     def initialize_stats(self):
-        self.addStat("Spread", 0, self.positions[0], "horizontal")
-        self.addStat("Speed", 0, self.positions[1], "horizontal")
+        self.addStat("Speed", 0, self.positions[0], "horizontal")
+        self.addStat("Spread", 0, self.positions[1], "horizontal")
         self.addStat("Research", 0, self.positions[2], "horizontal")
         self.addStat("Cyber Security", 0, self.positions[3], "horizontal")
         self.addOption("Total Points", f"Total Points: {self.totalPoints}", (600, 20), "horizontal")
@@ -119,3 +119,26 @@ class StatsMenu(AbstractMenu):
                         self.totalPoints += 1
                         self.editOption(key, f"{key}: {max(self.stats[key], 0)}")
             self.editOption("Total Points", f"Total Points: {self.totalPoints}") 
+
+class WinMenu(AbstractMenu):
+    def __init__(self, background, fontName="default",
+                color=(255,255,255)):
+        super().__init__(background, fontName, color)    
+        self.text = TextEntry((130, 200), "YOU WIN!", self.font, self.color)
+       
+    
+    def draw(self, surface):      
+        pygame.draw.rect(surface, (0, 0, 0), (0, 0, 800, 800))
+        self.text.draw(surface)
+
+class LoseMenu(AbstractMenu):
+    def __init__(self, background, fontName="default",
+                color=(255,255,255)):
+        super().__init__(background, fontName, color)    
+        self.text = TextEntry((130, 200), "YOU LOSE!", self.font, self.color)
+       
+    
+    def draw(self, surface):
+        pygame.draw.rect(surface, (0, 0, 0), (0, 0, 800, 800))
+        super().draw(surface)
+        self.text.draw(surface)

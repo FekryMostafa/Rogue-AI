@@ -13,7 +13,9 @@ class TextEntry(Drawable):
        "default" : pygame.font.Font(os.path.join(FONT_FOLDER,
                                     DEFAULT_FONT), DEFAULT_SIZE),
        "default8" : pygame.font.Font(os.path.join(FONT_FOLDER,
-                                    DEFAULT_FONT), 8)
+                                    DEFAULT_FONT), 8),
+        "TITLE": pygame.font.Font(os.path.join(FONT_FOLDER,
+                                    DEFAULT_FONT), 60)
     }
   
     def __init__(self, position, text, font="default",

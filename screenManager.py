@@ -30,7 +30,8 @@ class ScreenManager(object):
                                  center="both")
         
         self.statsMenu = StatsMenu("stats.jpeg", fontName="default8")
-        #self.statsMenu.addStat("Speed", "2", UPSCALED // 2 - vec(0,50), center=None)
+        self.winMenu = WinMenu("overlay.jpeg", fontName="TITLE")
+        self.loseMenu = LoseMenu("background.jpeg", fontName="TITLE")        
     
     def draw(self, drawSurf):
         if self.state.isInGame():
@@ -43,6 +44,10 @@ class ScreenManager(object):
             self.mainMenu.draw(drawSurf)
         elif self.state == "inStats":
             self.statsMenu.draw(drawSurf)
+        elif self.state == "winMenu":
+            self.winMenu.draw(drawSurf)
+        elif self.state == "loseMenu":
+            self.loseMenu.draw(drawSurf)
     
     
     def handleEvent(self, event, seconds):
@@ -69,6 +74,10 @@ class ScreenManager(object):
     
     def update(self, seconds):      
         if self.state == "game":
+            if self.game.isWin():
+                self.state.winGame()
+            elif self.game.isLose():
+                self.state.loseGame()
             self.game.update(seconds)
         elif self.state == "mainMenu":
             self.mainMenu.update(seconds)
@@ -77,13 +86,14 @@ class ScreenManager(object):
             self.update_game_stats()
 
     def update_game_stats(self):
-        """Update game stats based on changes in the stats menu."""
         spread_stat_value = self.statsMenu.stats.get("Spread", 0)
         speed_stat_value = self.statsMenu.stats.get("Speed", 0)
+        bar_stat_value = self.statsMenu.stats.get("Cyber Security", 0)
+
         self.game.randomness =  100000 / (2 * speed_stat_value) if speed_stat_value != 0 else 100000
         new_modifier = self.calculate_modifier(spread_stat_value)
         self.game.update_spread_rate(new_modifier)
+        self.game.update_bar(new_modifier)
 
     def calculate_modifier(self, stat_value):
-        """Calculate modifier from stat value. Adjust this based on your game's logic."""
         return 1.0 + (stat_value * 100)

@@ -39,10 +39,10 @@ class SpriteManager(object):
       _DEFAULT_SPRITE = (32,32)
       
       # A list of images that require to be loaded with transparency
-      _TRANSPARENCY = ["background.jpeg","star.png", "overlay.jpeg"]
+      _TRANSPARENCY = ["background.jpeg","star.png", "overlay.jpeg", "shield.png"]
       
       # A list of images that require to be loaded with a color key
-      _COLOR_KEY = ["background.jpeg","star.png", "server.png", "overlay.jpeg"]
+      _COLOR_KEY = ["background.jpeg","star.png", "server.png", "overlay.jpeg", "shield.png"]
       
       def __init__(self):
          # Stores the surfaces indexed based on file name

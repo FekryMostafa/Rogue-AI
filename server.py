@@ -13,6 +13,7 @@ class Server(Drawable):
         self.infected = False
         self.infection_speed = 0.0001
 
+
     def infect(self):
         self.infected = True
         self.infection_radius = 50
@@ -26,4 +27,3 @@ class Server(Drawable):
         if self.infected:
             infection_color = (0, 0, 0, 0)
             pygame.gfxdraw.filled_circle(overlay, int(self.position[0] + 0.5 * self.getSize()[0]), int(self.position[1] + 0.5 * self.getSize()[1]), int(self.infection_radius), infection_color)
-
