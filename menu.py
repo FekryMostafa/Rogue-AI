@@ -1,8 +1,9 @@
 from drawable import Drawable
 from vector import vec, magnitude
 from text import TextEntry
-
+from constants import *
 import pygame
+from pygame.locals import *
 
 class AbstractMenu(Drawable):
     def __init__(self, background, fontName="default",
@@ -71,7 +72,7 @@ class StatsMenu(AbstractMenu):
             (350, 260),
             (350, 310)
         ]
-        self.totalPoints = 10
+        self.totalPoints = 0
 
         self.initialize_stats()
 
@@ -91,7 +92,7 @@ class StatsMenu(AbstractMenu):
         self.addStat("Spread", 0, self.positions[1], "horizontal")
         self.addStat("Research", 0, self.positions[2], "horizontal")
         self.addStat("Cyber Security", 0, self.positions[3], "horizontal")
-        self.addOption("Total Points", f"Total Points: {self.totalPoints}", (600, 20), "horizontal")
+        self.addOption("Total Points", f"Total Points: {0}", (600, 20), "horizontal")
 
     def draw(self, surface):
         super().draw(surface)
@@ -142,3 +143,70 @@ class LoseMenu(AbstractMenu):
         pygame.draw.rect(surface, (0, 0, 0), (0, 0, 800, 800))
         super().draw(surface)
         self.text.draw(surface)
+
+class RandomMenu(AbstractMenu):
+    def __init__(self, background, fontName="default",
+                color=(0, 0, 0)):
+        super().__init__(background, fontName, color)      
+        self.objects = []
+        self.description = None
+
+    def draw(self, surface):
+        super().draw(surface)
+        pygame.draw.rect(surface, (255, 255, 255), (0, 0, UPSCALED[0], 50))
+        pygame.draw.rect(surface, (255, 255, 255), (0, UPSCALED[1] * 0.8, UPSCALED[0], 150))
+        font = pygame.font.SysFont(None, 16)
+        
+        self.drawText(surface, self.description, (0, 0, 0), (10, UPSCALED[1] * 0.8 + 10, UPSCALED[0], 150), font, aa=True, bkg=(255, 255, 255))
+
+        for thing in self.objects:
+            thing.draw(surface)
+
+        image = pygame.image.load("images/exit.png")
+        resized_image = pygame.transform.scale(image, (50, 50))
+        surface.blit(resized_image, (650, 50))
+
+
+    def addInformation(self, title, description):
+        self.title = TextEntry((10, 10), title, "EVENT_TITLE", self.color)
+        self.objects.append(self.title)
+        self.description = description
+
+    def drawText(self, surface, text, color, rect, font, aa=False, bkg=None):
+        #method from https://www.pygame.org/wiki/TextWrap
+        rect = Rect(rect)
+        y = rect.top
+        lineSpacing = -2
+
+        # get the height of the font
+        fontHeight = font.size("Tg")[1]
+
+        while text:
+            i = 1
+
+            # determine if the row of text will be outside our area
+            if y + fontHeight > rect.bottom:
+                break
+
+            # determine maximum width of line
+            while font.size(text[:i])[0] < rect.width and i < len(text):
+                i += 1
+
+            # if we've wrapped the text, then adjust the wrap to the last word      
+            if i < len(text): 
+                i = text.rfind(" ", 0, i) + 1
+
+            # render the line and blit it to the surface
+            if bkg:
+                image = font.render(text[:i], 1, color, bkg)
+                image.set_colorkey(bkg)
+            else:
+                image = font.render(text[:i], aa, color)
+
+            surface.blit(image, (rect.left, y))
+            y += fontHeight + lineSpacing
+
+            # remove the text we just blitted
+            text = text[i:]
+
+        return text

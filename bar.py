@@ -16,10 +16,11 @@ class Bar(Drawable):
 
     def adjustModifier(self, modifier):
         self.modifier = modifier + 1.0
+        print(self.modifier)
 
     def update(self, seconds):
         if self.progress < 100:
-            self.progress += 0.01 / self.modifier /5
+            self.progress += 0.01 / self.modifier
 
     def draw(self, surface):
         super().draw(surface)

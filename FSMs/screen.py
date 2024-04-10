@@ -9,6 +9,7 @@ class ScreenManagerFSM(AbstractGameFSM):
     inStats  = State()
     winMenu     = State()
     loseMenu   = State()
+    eventMenu = State()
 
     pause = game.to(paused) | paused.to(game) | \
             mainMenu.to.itself(internal=True)
@@ -18,7 +19,7 @@ class ScreenManagerFSM(AbstractGameFSM):
                 paused.to.itself(internal=True)
     winGame = game.to(winMenu)
     loseGame = game.to(loseMenu)
-    
+    event = game.to(eventMenu) | eventMenu.to(game) | inStats.to(eventMenu)
 
     def isInGame(self):
         return self == "game" or self == "paused"
