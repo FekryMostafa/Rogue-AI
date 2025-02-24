@@ -83,13 +83,14 @@ class ScreenManager(object):
                 "wait_for_model": True,
             },
         }
-
-        with requests.post(API_URL, headers=headers, json=payload) as response:
-            image_data = response.content
-            image = Image.open(BytesIO(image_data))
-            resized_image = image.resize((int(UPSCALED[0]), int(UPSCALED[1])))
-            resized_image.save(new_image_path)
-
+        try :
+            with requests.post(API_URL, headers=headers, json=payload) as response:
+                image_data = response.content
+                image = Image.open(BytesIO(image_data))
+                resized_image = image.resize((int(UPSCALED[0]), int(UPSCALED[1])))
+                resized_image.save(new_image_path)
+        except:
+            new_image_path = "images/event_1713019454.png"
         if old_image_path and os.path.exists(old_image_path) and old_image_path != new_image_path:
             os.remove(old_image_path)
         self.last_image_path = new_image_path

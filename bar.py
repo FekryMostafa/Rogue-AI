@@ -16,7 +16,7 @@ class Bar(Drawable):
 
     def adjustModifier(self, modifier):
         self.modifier = modifier + 1.0
-        print(self.modifier)
+        #print(self.modifier)
 
     def update(self, seconds):
         if self.progress < 100:

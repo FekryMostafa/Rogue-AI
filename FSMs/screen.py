@@ -13,7 +13,7 @@ class ScreenManagerFSM(AbstractGameFSM):
 
     pause = game.to(paused) | paused.to(game) | \
             mainMenu.to.itself(internal=True)
-    stats = game.to(inStats) | inStats.to(game) | paused.to(inStats) | mainMenu.to(inStats)
+    stats = game.to(inStats) | inStats.to(game) | paused.to(inStats) | mainMenu.to(inStats) | eventMenu.to(inStats)
     startGame = mainMenu.to(game)
     quitGame  = game.to(mainMenu) | \
                 paused.to.itself(internal=True)
